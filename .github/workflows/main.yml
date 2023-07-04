@@ -29,6 +29,10 @@ jobs:
           # Wait for Drupal container to start
           sleep 30
 
+          # Install MySQL client within the container
+          docker exec my-drupal apt-get update
+          docker exec my-drupal apt-get install -y mysql-client
+
           # Install Drush using Composer
           docker exec my-drupal composer require drush/drush
 
