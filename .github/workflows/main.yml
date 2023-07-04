@@ -13,9 +13,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Docker
-        uses: docker/setup-docker@v1
-
       - name: Run Drupal installation
         run: |
           docker run -d -p 8080:80 --name my-drupal \
