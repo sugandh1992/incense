@@ -7,13 +7,13 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Build and run Drupal container
+      - name: Run Drupal installation
         run: |
           docker run -d -p 8080:80 --name my-drupal \
             -v ${{ github.workspace }}/modules:/var/www/html/modules \
@@ -26,9 +26,14 @@ jobs:
             -e MYSQL_HOST=mysql \
             drupal
 
-      - name: Wait for Drupal container to start
-        run: docker wait my-drupal
+          # Wait for Drupal container to start
+          sleep 30
+
+          # Install Drupal using Drush
+          docker exec my-drupal drush site:install --account-name=admin --account-pass=admin --db-url=mysql://root:secret@mysql/mydrupal
 
       - name: Display container logs
         run: docker logs my-drupal
 
+      - name: Clean up Docker resources
+        run: docker rm my-drupal
