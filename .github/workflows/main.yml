@@ -29,9 +29,8 @@ jobs:
           # Wait for Drupal container to start
           sleep 30
 
-          # Install Drush within the container
-          docker exec my-drupal apt-get update
-          docker exec my-drupal apt-get install -y drush
+          # Install Drush using Composer
+          docker exec my-drupal composer require drush/drush
 
           # Install Drupal using Drush
           docker exec my-drupal drush site:install --account-name=admin --account-pass=admin --db-url=mysql://root:secret@mysql/mydrupal
