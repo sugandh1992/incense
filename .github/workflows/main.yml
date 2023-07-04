@@ -17,6 +17,6 @@ jobs:
             tools: composer:v2
         - name: Setup Mysql database
           uses: docker run -d --name mysqldatabase -e MYSQL_ROOT_PASSWORD=root mysql:latest
-        - name: Setup Drupal action
+        - name: Setup Drupal actions
           uses: docker run -d --name drupalcontainer -p 8080:80 --link mysqldatabase -e MYSQL_USERNAME=root -e MYSQL_PASSWORD=root
       
