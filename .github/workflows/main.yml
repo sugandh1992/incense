@@ -1,22 +1,42 @@
-name: ci
+name: Docker Drupal Workflow
 
 on:
   push:
     branches:
-      - "main"
+      - main
+
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
+
     steps:
-        - name: checkout
-          uses: actions/checkout@v2
-        - name: Setup PHP with composer v2
-          uses: shivammathur/setup-php@v2
-          with:
-            php-version: '8.1'
-            tools: composer:v2
-        - name: Setup Mysql database
-          uses: docker run -d --name mysqldatabase -e MYSQL_ROOT_PASSWORD=root mysql:latest
-        - name: Setup Drupal actions
-          uses: docker run -d --name drupalcontainer -p 8080:80 --link mysqldatabase -e MYSQL_USERNAME=root -e MYSQL_PASSWORD=root
-      
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: docker/setup-docker@v1
+
+      - name: Run Drupal installation
+        run: |
+          docker run -d -p 8080:80 --name my-drupal \
+            -v ${{ github.workspace }}/modules:/var/www/html/modules \
+            -v ${{ github.workspace }}/profiles:/var/www/html/profiles \
+            -v ${{ github.workspace }}/themes:/var/www/html/themes \
+            -v ${{ github.workspace }}/sites:/var/www/html/sites \
+            -e MYSQL_DATABASE=mydrupal \
+            -e MYSQL_USER=root \
+            -e MYSQL_PASSWORD=secret \
+            -e MYSQL_HOST=mysql \
+            drupal
+
+          # Wait for Drupal container to start
+          sleep 30
+
+          # Install Drupal using Drush
+          docker exec my-drupal drush site:install --account-name=admin --account-pass=admin --db-url=mysql://root:secret@mysql/mydrupal
+
+      - name: Display container logs
+        run: docker logs my-drupal
+
+      - name: Clean up Docker resources
+        run: docker rm my-drupal
