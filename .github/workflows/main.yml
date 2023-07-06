@@ -23,7 +23,7 @@ jobs:
             mysql:latest
 
       - name: Wait for MySQL container to start
-        run: sleep 10
+        run: sleep 30
 
       - name: Create MySQL database
         run: |
