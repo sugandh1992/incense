@@ -13,24 +13,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Start MySQL container
-        run: |
+      - name: Run Mysql database installation
+        run:  |
           docker run -d --name mysqldatabase \
-            -e MYSQL_DATABASE=mydrupal \
-            -e MYSQL_USER=root \
-            -e MYSQL_PASSWORD=root \
-            -e MYSQL_ROOT_PASSWORD=root \
-            mysql:latest
+          -e MYSQL_ROOT_PASSWORD=secret \
+          mysql:latest
 
       - name: Wait for MySQL container to start
         run: sleep 30
-
+  
       - name: Create MySQL database
         run: |
-          docker exec mysqldatabase mysql -u root -proot -e "CREATE DATABASE mydrupal;"
-
-      - name: Display container logs
-        run: docker logs my-mysql
+          docker exec mysqldatabase mysql -u root -psecret -e "CREATE DATABASE mydrupal;"
 
       - name: Run Drupal installation
         run: |
