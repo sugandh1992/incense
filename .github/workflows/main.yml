@@ -13,9 +13,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Run Mysql database installation
+        run:  |
+          docker run -d --name mysqldatabase \
+          -e MYSQL_ROOT_PASSWORD=secret \
+          mysql:latest
+
       - name: Run Drupal installation
         run: |
-          docker run -d -p 8080:80 --name my-drupal \
+          docker run -d -p 8080:80 --name my-drupal --link mysqldatabase \
             -v ${{ github.workspace }}/modules:/var/www/html/modules \
             -v ${{ github.workspace }}/profiles:/var/www/html/profiles \
             -v ${{ github.workspace }}/themes:/var/www/html/themes \
@@ -24,14 +30,11 @@ jobs:
             -e MYSQL_USER=root \
             -e MYSQL_PASSWORD=secret \
             -e MYSQL_HOST=mysql \
-            drupal
+            drupal:latest
 
           # Wait for Drupal container to start
           sleep 30
 
-          # Install MySQL client within the container
-          docker exec my-drupal apt-get update
-          docker exec my-drupal sh -c 'apt-get update && apt-get install -y default-mysql-client'
           # Install Drush using Composer
           docker exec my-drupal composer require drush/drush
 
