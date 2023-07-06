@@ -49,6 +49,10 @@ jobs:
           # Install Drush using Composer
           docker exec my-drupal composer require drush/drush
 
+          cp web/sites/default/default.settings.php web/sites/default/settings.php
+          chmod 777 web/sites/default/settings.php
+          chmod 777 web/sites/default
+
       - name: Install Drupal using Drush
         run: |
           docker exec my-drupal drush site:install --account-name=admin --account-pass=admin --db-url=mysql://root:secret@mysqldatabase/mydrupal
