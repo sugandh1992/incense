@@ -19,6 +19,9 @@ jobs:
           -e MYSQL_ROOT_PASSWORD=secret \
           mysql:latest
 
+          # Creating database
+          docker exec -it mysqldatabase mysql -u root -psecret -e "CREATE DATABASE mydrupal;"
+
       - name: Run Drupal installation
         run: |
           docker run -d -p 8080:80 --name my-drupal --link mysqldatabase \
