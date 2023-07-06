@@ -13,11 +13,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Create Docker network if not exists
+        run: |
+          docker network inspect my-network >/dev/null 2>&1 || docker network create my-network
+      
+
       - name: Run Drupal installation
         run: |
-          # Create a Docker network
-          docker network create my-network
-      
           # Start the MySQL container
           docker run -d --name mysqldatabase \
             --network my-network \
