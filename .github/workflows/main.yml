@@ -20,7 +20,7 @@ jobs:
           mysql:latest
 
           # Creating database
-          docker exec -it mysqldatabase mysql -u root -psecret -e "CREATE DATABASE mydrupal;"
+          docker exec mysqldatabase sh -c 'mysql -u root -psecret -e "CREATE DATABASE mydrupal;'
 
       - name: Run Drupal installation
         run: |
