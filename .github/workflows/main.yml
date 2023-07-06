@@ -47,6 +47,11 @@ jobs:
           # Install Drush using Composer
           docker exec my-drupal composer require drush/drush
 
+      - name: Install Drupal using Drush
+        run: |
+          docker exec my-drupal drush site:install --account-name=admin --account-pass=admin --db-url=mysql://root:secret@mysqldatabase/mydrupal
+
+
           # Install Drupal using Drush
           docker exec my-drupal drush site:install --account-name=admin --account-pass=admin --db-url=mysql://root:secret@mysql/mydrupal
 
