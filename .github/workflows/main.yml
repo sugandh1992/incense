@@ -49,9 +49,9 @@ jobs:
           # Install Drush using Composer
           docker exec my-drupal composer require drush/drush
                    
-          docker exec my-drupal chmod -R 777 /opt/drupal/web/sites/default
-          cp /opt/drupal/web/sites/default/default.settings.php /opt/drupal/web/sites/default/settings.php
-          chmod -R 777 /opt/drupal/web/sites/default/settings.php
+          docker exec my-drupal chmod -R 777 /var/www/html/sites/default
+          cp /var/www/html/sites/default/default.settings.php /var/www/html/sites/default/settings.php
+          chmod -R 777 /var/www/html/sites/default/settings.php
 
       - name: Show current path
         run: |
