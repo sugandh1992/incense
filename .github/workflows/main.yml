@@ -24,8 +24,6 @@ jobs:
           docker run -d --name mysqldatabase \
             --network my-network \
             -e MYSQL_DATABASE=mydrupal \
-            -e MYSQL_USER=root \
-            -e MYSQL_PASSWORD=secret \
             -e MYSQL_ROOT_PASSWORD=secret \
             mysql:latest
       
@@ -38,7 +36,7 @@ jobs:
             -v ${{ github.workspace }}/sites:/var/www/html/sites \
             -e MYSQL_DATABASE=mydrupal \
             -e MYSQL_USER=root \
-            -e MYSQL_PASSWORD=secret \
+            -e MYSQL_ROOT_PASSWORD=secret \
             drupal:latest
       
 
