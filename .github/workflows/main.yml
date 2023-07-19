@@ -57,7 +57,7 @@ jobs:
         run: |
           docker exec my-drupal drush site:install --account-name=admin --account-pass=admin --db-url=mysql://root:secret@mysqldatabase/mydrupal
 
-      - name: Display container logs
+      - name: Display container log 
         run: docker logs my-drupal
 
       
