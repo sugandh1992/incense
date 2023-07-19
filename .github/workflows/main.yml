@@ -48,13 +48,10 @@ jobs:
 
           # Install Drush using Composer
           docker exec my-drupal composer require drush/drush
-         
-          # Show Current path
-          echo "Cuurent path is: $pwd"
-          
-          chmod 777 web/sites/default
-          cp web/sites/default/default.settings.php web/sites/default/settings.php
-          chmod 777 web/sites/default/settings.php
+                   
+          docker exec my-drupal chmod -R 777 /opt/drupal/web/sites/default
+          cp /opt/drupal/web/sites/default/default.settings.php /opt/drupal/web/sites/default/settings.php
+          chmod -R 777 /opt/drupal/web/sites/default/settings.php
 
       - name: Show current path
         run: |
